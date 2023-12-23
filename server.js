@@ -20,6 +20,6 @@ app.get('/',(req,res)=>{
     res.send("HOMEPage");
 })
 
-app.listen(port, () => {
+app.listen(3001, () => {
     console.log(`Server running on port ${port}`);
 });

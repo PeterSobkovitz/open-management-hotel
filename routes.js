@@ -3,8 +3,9 @@ const User=require('./database_model');
 const jwt=require('jsonwebtoken');
 const router=express.Router();
 
+
 router.post('/register', async (req, res) => {
-    console.log(1)
+   
     try {
         const user = new User(req.body);
         await user.save();
