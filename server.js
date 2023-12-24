@@ -19,7 +19,8 @@ app.use(userRouter);
 app.get('/',(req,res)=>{
     res.send("HOMEPage");
 })
+module.exports = app;
+// app.listen(port, () => {
+//     console.log(`Server running on port ${port}`);
+// });
 
-app.listen(3001, () => {
-    console.log(`Server running on port ${port}`);
-});
