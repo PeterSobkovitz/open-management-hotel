@@ -5,7 +5,14 @@ const roomSchema = new mongoose.Schema({
     pricePerNight: { type: Number, required: true },
     amenities: [String],
     description: String,
-    images: [String] // URLs to images
+    images: [String], // URLs to images
+    size:Number,
+    floor:Number,
+    view:String,
+    specialAmenities:[String],
+    status:{type:String,default:'available',enum:['available','under_maintenance','occupied']},
+    bookings:[{type:mongoose.Schema.Types.ObjectId,ref:'Booking'}]
+
 });
 
 const Room = mongoose.model('Room', roomSchema);

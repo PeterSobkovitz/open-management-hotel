@@ -2,7 +2,16 @@ const mongoose =require('mongoose');
 const bcrypt= require('bcrypt');
 const userSchema= new mongoose.Schema({
     email:{type:String,required:true,unique:true},
-    password:{type:String,required:true}
+    password:{type:String,required:true},
+    contactNumber:String,
+    preferences:{
+        roomType:String,
+        additionalRequirements:String
+
+    },
+    accountStatus:{type:String,default:'active',enum:['active','suspended']},
+    bookings:[{type: mongoose.Schema.Types.ObjectId, ref:'Booking'}]
+
 });
 userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
