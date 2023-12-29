@@ -10,7 +10,13 @@ const userSchema= new mongoose.Schema({
 
     },
     accountStatus:{type:String,default:'active',enum:['active','suspended']},
-    bookings:[{type: mongoose.Schema.Types.ObjectId, ref:'Booking'}]
+    bookings:[{type: mongoose.Schema.Types.ObjectId, ref:'Booking'}],
+    tokens:[{
+        token:{
+            type:String,
+            required:true
+        }
+    }]
 
 });
 userSchema.pre('save', async function(next) {

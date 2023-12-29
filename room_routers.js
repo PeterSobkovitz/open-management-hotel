@@ -2,9 +2,10 @@
 const express = require('express');
 const Room = require('./room_model');
 const router = express.Router();
-
+const auth=require("./auth_middleware");
 // Get all rooms
 router.get('/rooms', async (req, res) => {
+  
     try {
         console.log("called");
         const rooms = await Room.find({});
@@ -16,6 +17,7 @@ router.get('/rooms', async (req, res) => {
 
 // Get room by ID
 router.get('/rooms/:id', async (req, res) => {
+  
     try {
         const room = await Room.findById(req.params.id);
         if (!room) {
@@ -30,7 +32,7 @@ router.get('/rooms/:id', async (req, res) => {
 // Filter rooms
 router.get('/rooms/filter', async (req, res) => {
     const match = {};
-
+    
     if (req.query.maxOccupancy) {
         match.maxOccupancy = req.query.maxOccupancy;
     }
