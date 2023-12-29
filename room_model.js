@@ -11,7 +11,11 @@ const roomSchema = new mongoose.Schema({
     view:String,
     specialAmenities:[String],
     status:{type:String,default:'available',enum:['available','under_maintenance','occupied']},
-    bookings:[{type:mongoose.Schema.Types.ObjectId,ref:'Booking'}]
+    bookings:[{type:mongoose.Schema.Types.ObjectId,ref:'Booking'}],
+    rating: {
+        average: { type: Number, default: 0 },
+        count: { type: Number, default: 0 }
+    }
 
 });
 
