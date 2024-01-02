@@ -22,7 +22,16 @@ router.post('/register', async (req, res) => {
         res.status(400).send(error);
     }
 });
-
+router.post('/register-admin', async (req, res) => {
+    try {
+        const user = new User({ ...req.body, isAdmin: true });
+        await user.save();
+        // Additional logic for token generation, etc.
+        res.status(201).send({ user });
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
 // User login
 router.post('/login',async (req, res) => {
     console.log(req.body.email);
@@ -31,6 +40,7 @@ router.post('/login',async (req, res) => {
         const user = await User.findOne({ email: req.body.email });
      
         if (!user) {
+            
             return res.status(400).send({ error: 'Unable to login' });
         }
 
@@ -39,16 +49,16 @@ router.post('/login',async (req, res) => {
         if (!isMatch) {
             return res.status(400).send({ error: 'Unable to login' });
         }
-        
+       
         const token=jwt.sign({id:user._id.toString()},process.env.JWT_SECRET);
-      
+        
         user.tokens.push({token});
         await user.save();
         
         res.send({ user, token });
         
     } catch (error) {
-        
+        console.log("cant log");
         res.status(400).send(error);
     }
 });

@@ -6,6 +6,8 @@ const mongoose=require("mongoose");
 const userRouter=require('./routes');
 const roomRouter=require('./room_routers');
 const bookRouter=require('./booking_routes');
+const inquiryRouter=require("./inquiry_routes");
+const reviewRouter=require("./review_routes");
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -19,6 +21,8 @@ app.use(express.json());
 app.use(userRouter);
 app.use(roomRouter);
 app.use(bookRouter);
+app.use(reviewRouter);
+app.use(inquiryRouter);
 app.get('/',(req,res)=>{
     res.send("HOMEPage");
 })
