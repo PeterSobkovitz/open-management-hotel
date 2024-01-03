@@ -3,7 +3,7 @@ const Booking = require('./booking_model');
 const Room=require('./room_model');
 const User=require('./database_model');
 const mongoose=require('mongoose');
-
+const adminAuth=require("./admin_auth");
 const auth=require("./auth_middleware");
 const router = express.Router();
 
@@ -186,6 +186,49 @@ router.get('/bookings/:bookingId/confirmation', auth,async (req, res) => {
         generateBookingPDF(booking, res);
     } catch (error) {
         res.status(500).send(error);
+    }
+});
+// View all bookings
+router.get('/admin/bookings', adminAuth, async (req, res) => {
+    try {
+        const bookings = await Booking.find({}).populate('user').populate('room');
+        res.send(bookings);
+    } catch (error) {
+        res.status(500).send({ error: 'Internal Server Error' });
+    }
+});
+
+// Update a booking
+router.patch('/admin/bookings/:bookingId', adminAuth, async (req, res) => {
+    try {
+        const booking = await Booking.findById(req.params.bookingId);
+        if (!booking) {
+            return res.status(404).send({ error: 'Booking not found' });
+        }
+
+        // Update logic, e.g., changing dates, room type
+        // Remember to check room availability if needed
+
+        await booking.save();
+        res.send(booking);
+    } catch (error) {
+        res.status(500).send({ error: 'Internal Server Error' });
+    }
+});
+
+// Cancel a booking
+router.patch('/admin/bookings/:bookingId/cancel', adminAuth, async (req, res) => {
+    try {
+        const booking = await Booking.findById(req.params.bookingId);
+        if (!booking) {
+            return res.status(404).send({ error: 'Booking not found' });
+        }
+
+        booking.status = 'cancelled';
+        await booking.save();
+        res.send(booking);
+    } catch (error) {
+        res.status(500).send({ error: 'Internal Server Error' });
     }
 });
 
