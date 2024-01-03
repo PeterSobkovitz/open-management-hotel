@@ -12,7 +12,7 @@ router.get('/admin/reports/revenue', adminAuth, async (req, res) => {
             { $match: { status: 'completed' } },
             { $group: { _id: null, totalRevenue: { $sum: '$totalPrice' } } }
         ]);
-       
+        console.log("FFFFFFF")
         res.send(revenueReport);
     } catch (error) {
         res.status(500).send({ error: 'Internal Server Error' });

@@ -16,6 +16,7 @@ const adminAuth = async (req, res, next) => {
 
         req.token = token;
         req.user = user;
+        console.log("loged admin");
         next();
        
     } catch (e) {

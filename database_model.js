@@ -1,6 +1,7 @@
 const mongoose =require('mongoose');
 const bcrypt= require('bcrypt');
 const userSchema= new mongoose.Schema({
+    name: {type:String,required: true,unique:false},
     email:{type:String,required:true,unique:true},
     password:{type:String,required:true},
     contactNumber:String,
@@ -11,11 +12,17 @@ const userSchema= new mongoose.Schema({
     },
     accountStatus:{type:String,default:'active',enum:['active','suspended']},
     bookings:[{type: mongoose.Schema.Types.ObjectId, ref:'Booking'}],
+    inquiries:[{type:mongoose.Schema.Types.ObjectId,ref:'Inquiry'}],
     tokens:[{
         token:{
             type:String,
             required:true
         }
+    }],
+    interactionHistory: [{
+        date: Date,
+        type: String, // e.g., "booking", "inquiry", "service request"
+        details: String
     }],
     isAdmin: { type: Boolean, default: false }
 

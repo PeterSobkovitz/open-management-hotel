@@ -78,6 +78,24 @@ router.patch('/admin/rooms/:roomId', adminAuth, async (req, res) => {
         res.status(500).send({ error: 'Internal Server Error' });
     }
 });
+router.patch('/admin/rooms/:roomId/availability', adminAuth, async (req, res) => {
+    console.log("BUDY");
+    try {
+        const { status } = req.body; // Expect a boolean value
+        
+        const room = await Room.findByIdAndUpdate(req.params.roomId, { status }, { new: true });
+       
+        if (!room) {
+            
+            return res.status(404).send({ error: 'Room not found' });
+        }
+       
+        res.send(room);
+       
+    } catch (error) {
+        res.status(400).send({ error: 'Invalid request' });
+    }
+});
 
 // Delete a room
 router.delete('/admin/rooms/:roomId', adminAuth, async (req, res) => {
@@ -91,6 +109,23 @@ router.delete('/admin/rooms/:roomId', adminAuth, async (req, res) => {
         res.send({ message: 'Room deleted' });
     } catch (error) {
         res.status(500).send({ error: 'Internal Server Error' });
+    }
+});
+router.patch('/admin/rooms/:roomId/special-offers', adminAuth, async (req, res) => {
+    try {
+        const { specialOffers } = req.body; // Expect an array of special offer objects
+        const room = await Room.findById(req.params.roomId);
+
+        if (!room) {
+            return res.status(404).send({ error: 'Room not found' });
+        }
+
+        room.specialOffers = specialOffers;
+        await room.save();
+
+        res.send(room);
+    } catch (error) {
+        res.status(400).send({ error: 'Invalid request' });
     }
 });
 
