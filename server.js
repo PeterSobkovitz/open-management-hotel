@@ -9,6 +9,9 @@ const bookRouter=require('./booking_routes');
 const inquiryRouter=require("./inquiry_routes");
 const reportingRouter=require("./reporting_routes");
 const reviewRouter=require("./review_routes");
+const customerRouter=require("./customer_routes.js");
+const promotionRouter=require("./promotion_routes.js");
+const roleRouter=require("./role_routes.js");
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -24,7 +27,10 @@ app.use(roomRouter);
 app.use(bookRouter);
 app.use(reviewRouter);
 app.use(reportingRouter);
+app.use(promotionRouter);
+app.use(customerRouter);
 app.use(inquiryRouter);
+app.use(roleRouter);
 app.get('/',(req,res)=>{
     res.send("HOMEPage");
 })
