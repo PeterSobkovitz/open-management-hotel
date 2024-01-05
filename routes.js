@@ -35,30 +35,33 @@ router.post('/register-admin', async (req, res) => {
 // User login
 router.post('/login',async (req, res) => {
     
-   
+ 
     try {
         const user = await User.findOne({ email: req.body.email });
-     
+        
         if (!user) {
             
             return res.status(400).send({ error: 'Unable to login' });
         }
-
+        
         const isMatch = await user.comparePassword(req.body.password);
         
         if (!isMatch) {
             return res.status(400).send({ error: 'Unable to login' });
         }
-       
+        
         const token=jwt.sign({id:user._id.toString()},process.env.JWT_SECRET);
         
         user.tokens.push({token});
+        
         await user.save();
+      
+        
         
         res.send({ user, token });
         
     } catch (error) {
-        console.log("cant log");
+        
         res.status(400).send(error);
     }
 });

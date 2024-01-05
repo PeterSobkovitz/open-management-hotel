@@ -4,15 +4,15 @@ const User=require('./database_model');
 const mongoose=require("mongoose");
 const ObjectId=mongoose.Types.ObjectId;
 const auth = async (req, res, next) => {
-    
+    console.log("starting authentic")
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
-       
+        
         
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
         const user = await User.findOne({ _id:new ObjectId(decoded.id), 'tokens.token': token });
-        
+        console.log("isit?");
         if (!user) {
             
             console.log("Not found")
@@ -23,6 +23,7 @@ const auth = async (req, res, next) => {
         req.user = user;
         
         next();
+        console.log("IN HERE")
      
        
     } catch (e) {

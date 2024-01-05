@@ -13,6 +13,9 @@ const adminAuth = async (req, res, next) => {
             console.log("error");
             throw new Error();
         }
+        else{
+            console.log("Passing")
+        }
 
         req.token = token;
         req.user = user;

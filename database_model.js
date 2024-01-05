@@ -24,6 +24,8 @@ const userSchema= new mongoose.Schema({
         type: String, // e.g., "booking", "inquiry", "service request"
         details: String
     }],
+    roles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }],
+
     isAdmin: { type: Boolean, default: false }
 
 });

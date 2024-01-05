@@ -6,7 +6,7 @@ const mongoose=require('mongoose');
 const adminAuth=require("./admin_auth");
 const auth=require("./auth_middleware");
 const router = express.Router();
-
+const DiscountCode=require("./discount_model");
 const PDFDocument = require('pdfkit');
 
 function generateBookingPDF(booking, res) {
@@ -41,6 +41,15 @@ async function validateUserAndRoom(userId, roomId) {
     const room = await Room.findById(roomId);
     return user && room;
 }
+async function applyDiscount(discountCode, totalPrice) {
+    const discount = await DiscountCode.findOne({ code: discountCode, isActive: true });
+    if (!discount || discount.expirationDate < new Date()) {
+        throw new Error('Invalid or expired discount code');
+    }
+
+    // Assuming a simple percentage-based discount for this example
+    return totalPrice * (1 - discount.discountRate / 100);
+}
 
 
 router.post('/bookings',auth, async (req, res) => {
@@ -48,11 +57,11 @@ router.post('/bookings',auth, async (req, res) => {
     const session = await mongoose.startSession();
     
     session.startTransaction();
-    
+    console.log("Booking1");
     try {
-        console.log(req.body);
-        const { roomId, userId, newStartDate, newEndDate } = req.body;
         
+        const { roomId, userId, newStartDate, newEndDate } = req.body;
+        const discountCode=req.body.DiscountCode;
         const user = await User.findById(userId).session(session);
         const room = await Room.findById(roomId).session(session);
         if (!user || !room) {
@@ -68,8 +77,11 @@ router.post('/bookings',auth, async (req, res) => {
         console.log("good when find2")
 
         const totalPrice = calculateTotalPrice(newStartDate, newEndDate, room.pricePerNight);
-        console.log(totalPrice);
-        console.log("Going booking");
+        
+
+        if (discountCode) {
+            totalPrice = await applyDiscount(discountCode, totalPrice);
+        }
         const booking = new Booking({ room: roomId, user: userId, startDate:newStartDate, endDate:newEndDate, totalPrice });
         console.log(booking);
         
