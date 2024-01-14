@@ -10,7 +10,7 @@ const roomSchema = new mongoose.Schema({
     floor:Number,
     view:String,
     specialAmenities:[String],
-    status:{type:String,default:'available',enum:['available','under_maintenance','occupied']},
+    // status:{type:String,default:'available',enum:['available','under_maintenance','occupied']},
     
     bookings:[{type:mongoose.Schema.Types.ObjectId,ref:'Booking'}],
     rating: {

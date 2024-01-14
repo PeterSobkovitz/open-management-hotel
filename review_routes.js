@@ -11,49 +11,71 @@ const Booking=require("./booking_model");
 // Assuming you have a middleware `auth` for authentication
 
 router.post('/reviews', auth, async (req, res) => {
+    
     const session = await mongoose.startSession();
     session.startTransaction();
-    console.log("!!!!!!!!!!!!!!1")
+   
     try {
-        const { booking, rating, comment } = req.body;
-        console.log(req.body);
+        const { booking, rating, comment,type} = req.body;
+      
         const userId = req.user._id; // Assuming this is set by your auth middleware
-        console.log(booking);
+       
         const bookingfound = await Booking.findById(booking).session(session);
-        console.log(bookingfound);
-
-       
-        if (!bookingfound) {
-            return res.status(404).send({ error: 'Booking not found' });
-        }
-        console.log("ddd");
-        if (bookingfound.user.toString() !== userId.toString()) {
-            return res.status(403).send({ error: 'Cannot review a booking that is not yours' });
-        }
-        const review = new Review({ booking, user: userId, rating, comment });
-       
-        await review.save({ session });
+        console.log("checking");
         
-       
+
+        if (type==='review'){
+        
+            if (!bookingfound) {
+                return res.status(404).send({ error: 'Booking not found' });
+            }
+             
+            if (bookingfound.user.toString() !== userId.toString()) {
+                return res.status(403).send({ error: 'Cannot review a booking that is not yours' });
+            }
+            const review = new Review({ booking, user: userId, rating, comment });
+            console.log("revied");
+            await review.save({ session });
+            
+            
+        
 // Manually calculate the new average
         
-        const room = await Room.findById(bookingfound.room).session(session);
-        if (!room) {
-            console.log("Room nONE")
-            throw new Error('Room not found');
+            const room = await Room.findById(bookingfound.room).session(session);
+            if (!room) {
+                console.log("Room nONE")
+                throw new Error('Room not found');
+            }
+            console.log("room");
+            // Manually calculate the new average rating
+            const totalRating = (room.rating.average * room.rating.count) + rating;
+            const newCount = room.rating.count + 1;
+            room.rating.average = totalRating / newCount;
+            room.rating.count = newCount;
+            
+            await room.save({ session });
+            res.status(201).send(review);
         }
-        console.log("room");
-        // Manually calculate the new average rating
-        const totalRating = (room.rating.average * room.rating.count) + rating;
-        const newCount = room.rating.count + 1;
-        room.rating.average = totalRating / newCount;
-        room.rating.count = newCount;
-        
-        await room.save({ session });
+        else if(type==='feedback'){
+            console.log("feedback")
+            const feedback= new Review({ user: userId, comment, type });
+            try{
+                await feedback.save({ session });
+            }
+            catch(e){
+                console.log(e);
+            }
+           
+           
+            res.status(201).send(feedback);
+        }
+        else{
+            throw new Error('Invalid Type Specified');
+        }
         
         await session.commitTransaction();
         console.log("DONE")
-        res.status(201).send(review);
+       
         
         
         
@@ -75,6 +97,8 @@ router.post('/reviews', auth, async (req, res) => {
 
 
 router.patch('/reviews/:reviewId/flag', auth, async (req, res) => {
+    const session=await mongoose.startSession()
+    session.startTransaction()
     try {
         const review = await Review.findById(req.params.reviewId);
         if (!review) {
@@ -83,43 +107,58 @@ router.patch('/reviews/:reviewId/flag', auth, async (req, res) => {
 
         review.flagged = true;
         review.moderationStatus = 'pending';
-        await review.save();
-
-        res.send({ message: 'Review flagged for moderation' });
+        await review.save(session);
+        await session.commitTransaction();
+        res.send({ message: 'Review or feedback flagged for moderation' });
+        console.log("flagged");
     } catch (error) {
+        await session.abortTransaction();
         res.status(500).send({ error: error.message });
+    }finally{
+        await session.endSession();
     }
 });
+
 router.get('/reviews/moderation', adminAuth, async (req, res) => {
+    
     try {
-        const reviews = await Review.find({ flagged: true, moderationStatus: 'pending' });
+        const { type } = req.query; // Optionally filter by 'review' or 'feedback'
+        const query = type ? { flagged: true, moderationStatus: 'pending', type } : { flagged: true, moderationStatus: 'pending' };
+        const reviews = await Review.find(query);
         res.send(reviews);
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
 });
 
+
 // Endpoint to approve or reject a review
 router.patch('/reviews/:reviewId/moderate', adminAuth, async (req, res) => {
+    const session=await mongoose.startSession()
+    session.startTransaction()
+
     try {
         const { moderationStatus } = req.body; // 'approved' or 'rejected'
         const review = await Review.findById(req.params.reviewId);
 
         if (!review) {
-            return res.status(404).send({ error: 'Review not found' });
+            return res.status(404).send({ error: 'Review or feedback not found' });
         }
-
-        review.moderationStatus = moderationStatus;
-        await review.save();
-
-        res.send({ message: `Review ${moderationStatus}` });
+        
+        await review.save(session);
+        console.log(`Review or feedback ${moderationStatus}`)
+        session.commitTransaction()
+        res.send({ message: `Review or feedback ${moderationStatus}` });
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
 });
+
 router.get('/reviews/:bookingId', async (req, res) => {
     try {
-        const reviews = await Review.find({ booking: req.params.bookingId });
+        const { type } = req.query; // 'review' or 'feedback'
+        const query = type ? { booking: req.params.bookingId, type } : { booking: req.params.bookingId };
+        const reviews = await Review.find(query);
         res.send(reviews);
     } catch (error) {
         res.status(500).send(error);

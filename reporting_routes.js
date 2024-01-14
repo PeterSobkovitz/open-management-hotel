@@ -3,6 +3,7 @@ const Booking=require("./booking_model");
 const express = require('express');
 const router=express.Router();
 const Room=require("./room_model");
+const mongoose=require("mongoose");
 
 // Generate a revenue report
 router.get('/admin/reports/revenue', adminAuth, async (req, res) => {

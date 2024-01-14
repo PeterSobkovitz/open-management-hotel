@@ -2,17 +2,25 @@ const express=require('express');
 const User=require('./database_model');
 const jwt=require('jsonwebtoken');
 const router=express.Router();
-
+const mongoose=require("mongoose");
 const adminAuth=require("./admin_auth");
 const auth=require("./auth_middleware");
 const ServiceRequest=require("./custom_service_model");
 router.post('/service-requests', auth, async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
         const serviceRequest = new ServiceRequest({ ...req.body, user: req.user._id });
-        await serviceRequest.save();
+        await serviceRequest.save(session);
+        await session.commitTransaction();
         res.status(201).send(serviceRequest);
+        
     } catch (error) {
         res.status(400).send({ error: 'Error creating service request' });
+        await session.abortTransaction();
+    }finally{
+        await session.endSession();
     }
 });
 router.get('/admin/customers', adminAuth, async (req, res) => {
@@ -54,6 +62,8 @@ router.get('/admin/service-requests', adminAuth, async (req, res) => {
     }
 });
 router.patch('/admin/service-requests/:requestId', adminAuth, async (req, res) => {
+    const session=await mongoose.startSession()
+    session.startTransaction()
     try {
         const { response, status } = req.body;
         const serviceRequest = await ServiceRequest.findById(req.params.requestId);
@@ -66,10 +76,16 @@ router.patch('/admin/service-requests/:requestId', adminAuth, async (req, res) =
         serviceRequest.status = status; // e.g., 'open' or 'closed'
         serviceRequest.updatedAt = new Date();
 
-        await serviceRequest.save();
+        await serviceRequest.save(session);
+        await session.commitTransaction();
         res.send(serviceRequest);
     } catch (error) {
+        await session.abortTransaction();
         res.status(500).send({ error: 'Internal Server Error' });
+        
+    }
+    finally{
+        await session.endSession();
     }
 });
 

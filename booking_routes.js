@@ -28,6 +28,30 @@ async function isRoomAvailable(roomId, startDate, endDate) {
     });
     return !existingBooking;
 }
+async function updateRoomAvailability(roomId,session) {
+    let status;
+    const booking= await Booking.find({
+        room: roomId,
+        endDate: { $gte: new Date() },
+        
+        status: 'booked'
+    }).session(session);
+    if (booking.length===0){
+        status="available";
+    }
+    else{
+        status="booked"
+    }
+        
+
+    console.log(booking);
+
+
+    await Room.findByIdAndUpdate(roomId,{status:status},{session:session});
+
+}
+
+
 function calculateTotalPrice(startDate, endDate, pricePerNight) {
     
     const dayInMs = 24 * 60 * 60 * 1000;
@@ -68,13 +92,13 @@ router.post('/bookings',auth, async (req, res) => {
             console.log("invalid");
             throw new Error('Invalid user or room');
         }
-        console.log("good when find")
+      
         const available = await isRoomAvailable(roomId, newStartDate, newEndDate, session);
         
         if (!available) {
             throw new Error('Room is not available for the selected dates');
         }
-        console.log("good when find2")
+        
 
         const totalPrice = calculateTotalPrice(newStartDate, newEndDate, room.pricePerNight);
         
@@ -86,14 +110,17 @@ router.post('/bookings',auth, async (req, res) => {
         console.log(booking);
         
         await booking.save({ session });
-       
-        // Update user and room with booking info
+        console.log("bookingsaved")
+        // // Update user and room with booking info
         user.bookings.push(booking);
         room.bookings.push(booking);
+        console.log("infosaved")
         await user.save({ session });
         await room.save({ session });
-
+        console.log("saved room user")
+        
         await session.commitTransaction();
+        console.log("updateroomavailabilty")
         res.status(201).send(booking);
     } catch (error) {
         console.log(error);
@@ -117,7 +144,6 @@ router.get('/bookings/user/:userId',auth, async (req, res) => {
 
 // Cancel a booking
 router.patch('/bookings/:bookingId/cancel', auth, async (req, res) => {
-    console.log("cancelling");
     const session = await mongoose.startSession();
     session.startTransaction();
 
@@ -131,8 +157,21 @@ router.patch('/bookings/:bookingId/cancel', auth, async (req, res) => {
         booking.status = 'cancelled';
         await booking.save({ session });
 
-        // Optionally, update the room and user documents
-        // For example, remove this booking from the user's and room's bookings array
+        // Update user's booking array
+        await User.updateOne(
+            { _id: booking.user }, 
+            { $pull: { bookings: booking._id } },
+            { session }
+        );
+
+        // Update room's booking array and availability
+
+        await Room.updateOne(
+            { _id: booking.room }, 
+            { $pull: { bookings: booking._id } },
+            { session }
+        );
+        
 
         await session.commitTransaction();
         res.send(booking);
@@ -145,30 +184,43 @@ router.patch('/bookings/:bookingId/cancel', auth, async (req, res) => {
 });
 
 
+
 // Modify a booking - this will depend on what you allow to be modified
 router.patch('/bookings/:bookingId', auth, async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
-
+    
     try {
         const bookingId = req.params.bookingId;
-        const { newStartDate, newEndDate } = req.body;
+        const { newStartDate, newEndDate, discountCode } = req.body;
 
         const booking = await Booking.findById(bookingId).session(session);
         if (!booking) {
             throw new Error('Booking not found');
         }
 
-        // Additional logic to check room availability for new dates
+        // Check room availability for new dates
+        const available = await isRoomAvailable(booking.room, newStartDate, newEndDate, session);
+        if (!available) {
+            throw new Error('Room is not available for the selected dates');
+        }
 
-        // Recalculate the price if needed
+        // Recalculate the price
         const room = await Room.findById(booking.room).session(session);
-        const newPrice = calculateTotalPrice(newStartDate, newEndDate, room.pricePerNight);
+        let newPrice = calculateTotalPrice(newStartDate, newEndDate, room.pricePerNight);
+
+        // Apply discount if provided
+        if (discountCode) {
+            newPrice = await applyDiscount(discountCode, newPrice);
+        }
 
         booking.startDate = newStartDate;
         booking.endDate = newEndDate;
         booking.totalPrice = newPrice;
         await booking.save({ session });
+
+        // Update room availability based on the new booking dates
+        await updateRoomAvailability(booking.room, session);
 
         await session.commitTransaction();
         res.send(booking);
@@ -212,37 +264,78 @@ router.get('/admin/bookings', adminAuth, async (req, res) => {
 
 // Update a booking
 router.patch('/admin/bookings/:bookingId', adminAuth, async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
-        const booking = await Booking.findById(req.params.bookingId);
+        const { newStartDate, newEndDate, newRoomId, discountCode } = req.body;
+        const booking = await Booking.findById(req.params.bookingId).session(session);
         if (!booking) {
-            return res.status(404).send({ error: 'Booking not found' });
+            throw new Error('Booking not found');
         }
 
-        // Update logic, e.g., changing dates, room type
-        // Remember to check room availability if needed
+        // Check room availability if the room or dates are being changed
+        if (newRoomId || newStartDate || newEndDate) {
+            const roomId = newRoomId || booking.room;
+            const available = await isRoomAvailable(roomId, newStartDate, newEndDate, session);
+            if (!available) {
+                throw new Error('Room is not available for the selected dates');
+            }
 
-        await booking.save();
+            // Recalculate the price
+            const room = await Room.findById(roomId).session(session);
+            let newPrice = calculateTotalPrice(newStartDate, newEndDate, room.pricePerNight);
+            if (discountCode) {
+                newPrice = await applyDiscount(discountCode, newPrice);
+            }
+
+            booking.startDate = newStartDate;
+            booking.endDate = newEndDate;
+            booking.room = roomId;
+            booking.totalPrice = newPrice;
+        }
+
+        await booking.save({ session });
+        await updateRoomAvailability(booking.room, session);
+
+        await session.commitTransaction();
         res.send(booking);
     } catch (error) {
-        res.status(500).send({ error: 'Internal Server Error' });
+        await session.abortTransaction();
+        res.status(400).send({ error: error.message });
+    } finally {
+        session.endSession();
     }
 });
+
 
 // Cancel a booking
 router.patch('/admin/bookings/:bookingId/cancel', adminAuth, async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
     try {
-        const booking = await Booking.findById(req.params.bookingId);
+        const booking = await Booking.findById(req.params.bookingId).session(session);
         if (!booking) {
-            return res.status(404).send({ error: 'Booking not found' });
+            throw new Error('Booking not found');
         }
 
         booking.status = 'cancelled';
-        await booking.save();
+        await booking.save({ session });
+        
+        // Update room availability
+        await updateRoomAvailability(booking.room, session);
+
+        await session.commitTransaction();
         res.send(booking);
     } catch (error) {
+        await session.abortTransaction();
         res.status(500).send({ error: 'Internal Server Error' });
+    } finally {
+        session.endSession();
     }
 });
+
 
 module.exports=router
 

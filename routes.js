@@ -3,9 +3,9 @@ const User=require('./database_model');
 const jwt=require('jsonwebtoken');
 const router=express.Router();
 const auth=require('./auth_middleware');
-
+const mongoose=require("mongoose");
 router.post('/register', async (req, res) => {
- 
+    
     try {
         const user = new User(req.body);
         await user.save();
@@ -15,27 +15,30 @@ router.post('/register', async (req, res) => {
         
         user.tokens = user.tokens.concat({ token });
         await user.save();
-       
+     
         res.status(201).send({ user, token });
        
     } catch (error) {
-        res.status(400).send(error);
-    }
+     
+        res.status(400).send(error);}
+ 
 });
 router.post('/register-admin', async (req, res) => {
+    
     try {
         const user = new User({ ...req.body, isAdmin: true });
         await user.save();
         // Additional logic for token generation, etc.
+      
         res.status(201).send({ user });
     } catch (error) {
+       
         res.status(400).send(error);
     }
 });
 // User login
 router.post('/login',async (req, res) => {
-    
- 
+
     try {
         const user = await User.findOne({ email: req.body.email });
         
@@ -57,7 +60,6 @@ router.post('/login',async (req, res) => {
         await user.save();
       
         
-        
         res.send({ user, token });
         
     } catch (error) {
@@ -66,13 +68,16 @@ router.post('/login',async (req, res) => {
     }
 });
 router.post('/logout', auth, async (req, res) => {
+    
     try {
         // Remove the token used for this session
         req.user.tokens = req.user.tokens.filter(tokenObj => tokenObj.token !== req.token);
 
         await req.user.save();
+      
         res.send({ message: 'Logout successful' });
     } catch (error) {
+        
         res.status(500).send({ error: 'Unable to logout' });
     }
 });
