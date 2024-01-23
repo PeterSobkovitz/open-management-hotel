@@ -5,10 +5,10 @@ import Navbar from './navbar'; // Component for navigation
 // import Reviews from './Reviews'; // Component for user reviews
 // import Promotions from './Promotions'; // Component for promotions
 
-function Dashboard() {
+function Dashboard({isLoggedIn}) {
   return (
     <div className="dashboard-container">
-      <Navbar />
+      <Navbar isLoggedIn={isLoggedIn}/>
       <div className="content">
         
         {/* Add other components as needed */}
