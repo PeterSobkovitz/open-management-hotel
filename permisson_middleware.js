@@ -1,5 +1,6 @@
 const Role=require("./role_model");
 
+
 const checkPermission = (permission) => {
     return async (req, res, next) => {
         const user = req.user;

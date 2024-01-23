@@ -6,6 +6,7 @@ const serviceRequestSchema = new mongoose.Schema({
     response: String,
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date }
+    
 });
 
 const ServiceRequest = mongoose.model('ServiceRequest', serviceRequestSchema);

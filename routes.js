@@ -5,7 +5,7 @@ const router=express.Router();
 const auth=require('./auth_middleware');
 const mongoose=require("mongoose");
 router.post('/register', async (req, res) => {
-    
+    console.log("register endpoint");
     try {
         const user = new User(req.body);
         await user.save();

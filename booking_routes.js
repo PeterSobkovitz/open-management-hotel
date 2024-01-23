@@ -146,6 +146,7 @@ router.get('/bookings/user/:userId',auth, async (req, res) => {
 router.patch('/bookings/:bookingId/cancel', auth, async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
+    
 
     try {
         const booking = await Booking.findById(req.params.bookingId).session(session);

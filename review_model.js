@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const reviewSchema = new mongoose.Schema({
     booking: { type: mongoose.Schema.Types.ObjectId, ref: 'Booking' },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

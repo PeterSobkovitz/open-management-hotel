@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const discountCodeSchema = new mongoose.Schema({
     code: { type: String, required: true, unique: true },
     associatedPromotion: { type: mongoose.Schema.Types.ObjectId, ref: 'Promotion' },

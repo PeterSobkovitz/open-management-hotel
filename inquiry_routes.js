@@ -3,6 +3,7 @@ const auth=require("./auth_middleware");
 const adminAuth=require("./admin_auth");
 const mongoose=require("mongoose");
 const express = require('express');
+
 const Inquiry =require("./inquiry_model");
 const { body, validationResult } = require('express-validator');
 const router = express.Router();

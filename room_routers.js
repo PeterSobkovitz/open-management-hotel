@@ -5,6 +5,7 @@ const router = express.Router();
 const adminAuth=require("./admin_auth");
 const auth=require("./auth_middleware");
 const mongoose=require("mongoose");
+
 // Get all rooms
 router.get('/rooms', async (req, res) => {
     const { page = 1, limit = 10, sortBy = 'createdAt', order = 'asc' } = req.query;

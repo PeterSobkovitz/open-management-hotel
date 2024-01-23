@@ -13,6 +13,7 @@ const customerRouter=require("./customer_routes.js");
 const promotionRouter=require("./promotion_routes.js");
 const roleRouter=require("./role_routes.js");
 const app = express();
+const cors=require("cors");
 const port = process.env.PORT || 3000;
 
 mongoose.connect(process.env.MONGODB_URL, {
@@ -20,7 +21,7 @@ mongoose.connect(process.env.MONGODB_URL, {
     
    
 });
-
+app.use(cors());
 app.use(express.json());
 app.use(userRouter);
 app.use(roomRouter);

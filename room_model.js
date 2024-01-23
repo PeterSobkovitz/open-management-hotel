@@ -1,4 +1,5 @@
 const mongoose=require("mongoose");
+
 const roomSchema = new mongoose.Schema({
     name: { type: String, required: true },
     maxOccupancy: { type: Number, required: true },
