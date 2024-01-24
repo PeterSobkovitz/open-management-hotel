@@ -3,22 +3,24 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Dashboard from './compnents/dashboard';
 import Register from './compnents/register';
+import {AuthProvider} from './compnents/authContext';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import 'tailwindcss/tailwind.css';
 const App = () => {
-    const [isLoggedIn,setIsLoggedIn]=useState(false);
-    useEffect(()=>{
-        const token=localStorage.getItem('token');
-        if (token){
-            setIsLoggedIn(true);
-        }
-    },[])
+    // const [isLoggedIn,setIsLoggedIn]=useState(false);
+    // useEffect(()=>{
+    //     const token=localStorage.getItem('token');
+    //     if (token){
+    //         setIsLoggedIn(true);
+    //     }
+    // },[])
     return (
+        <AuthProvider>
         <Router>
             <Routes>
-            <Route path="/" element={<Dashboard isLoggedIn={isLoggedIn} />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/register" element={<Register/>}/>
 
                 {/* <Route path="/register" element={<AuthForm register={true}/>}></Route>
@@ -29,6 +31,7 @@ const App = () => {
                 {/* Other routes */}
             </Routes>
         </Router>
+        </AuthProvider>
     );
 };
 

@@ -1,34 +1,30 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect,useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { AuthContext } from './authContext';
 import axios from 'axios';
 function LoginModal({ isOpen, onClose }) {
   const modalRef = useRef();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate = useNavigate()
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { setIsLoggedIn } = useContext(AuthContext);
+
   const onSubmit = async (data) => {
     try {
 
       const response = await axios.post("http://localhost:3001/login", data);
       localStorage.setItem('token', response.data.token);
       setIsLoggedIn(true);
-      console.log(isLoggedIn);
+     
       onClose();
+      navigate('/');
 
     }
     catch (e) {
       console.log(e);
     }
   }
-  useEffect(() => {
-
-
-    if (isLoggedIn) {
-      console.log("navigate");
-      navigate('/');
-    }
-  }, [isLoggedIn, navigate]);
+  
 
   useEffect(() => {
     const handleClickOutside = (event) => {

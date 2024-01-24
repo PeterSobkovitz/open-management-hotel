@@ -1,11 +1,13 @@
 // Navbar.js
-import React,{useState} from 'react';
+import React,{useState,useContext} from 'react';
 
+import { AuthContext } from './authContext';
 import LoginModal from './loginmodal';
 import Logout from './logout';
 import { Link } from 'react-router-dom';
-function Navbar({isLoggedIn}) {
+function Navbar() {
   const [isModalOpen, setModalOpen] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
   return (
     <>
