@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Dashboard from './compnents/dashboard';
 import Register from './compnents/register';
 import {AuthProvider} from './compnents/authContext';
+import RoomsDashboard from './compnents/rooms'; // Correct path as necessary
+
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -22,13 +24,9 @@ const App = () => {
             <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/register" element={<Register/>}/>
+            <Route path="/rooms" element={<RoomsDashboard/>}></Route>
 
-                {/* <Route path="/register" element={<AuthForm register={true}/>}></Route>
-                <Route path="/login"element={<AuthForm register={false}/>}>
-                 */}
-                    
-                {/* </Route> */}
-                {/* Other routes */}
+            
             </Routes>
         </Router>
         </AuthProvider>
