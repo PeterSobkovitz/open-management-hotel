@@ -36,7 +36,9 @@ router.get('/rooms/:id', async (req, res) => {
 
 // Filter rooms
 router.get('/rooms/filter', async (req, res) => {
+    console.log(req.query);
     const match = {};
+    console.log(12222222222)
     
     if (req.query.maxOccupancy) {
         match.maxOccupancy = req.query.maxOccupancy;

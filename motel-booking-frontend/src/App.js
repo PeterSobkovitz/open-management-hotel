@@ -5,7 +5,7 @@ import Dashboard from './compnents/dashboard';
 import Register from './compnents/register';
 import {AuthProvider} from './compnents/authContext';
 import RoomsDashboard from './compnents/rooms'; // Correct path as necessary
-
+import RoomManagementBar from './compnents/roommgmt';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -26,7 +26,6 @@ const App = () => {
             <Route path="/register" element={<Register/>}/>
             <Route path="/rooms" element={<RoomsDashboard/>}></Route>
 
-            
             </Routes>
         </Router>
         </AuthProvider>

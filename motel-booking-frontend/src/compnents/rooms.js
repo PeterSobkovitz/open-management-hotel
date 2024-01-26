@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import SimpleNavbar from './simplenavbar';
 function RoomsDashboard() {
   const [rooms, setRooms] = useState([]);
 
@@ -13,6 +13,8 @@ function RoomsDashboard() {
   }, []);
 
   return (
+    <>
+    <SimpleNavbar/>
     <div className="container mx-auto my-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {rooms.map(room => (
@@ -32,6 +34,7 @@ function RoomsDashboard() {
         ))}
       </div>
     </div>
+    </>
   );
 }
 
