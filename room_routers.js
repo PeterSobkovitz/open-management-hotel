@@ -54,13 +54,14 @@ router.get('/rooms/filter', async (req, res) => {
         let filteredRooms = await Room.find(match);
     
         if (startDate && endDate) {
-            const promises = filteredRooms.map(async (room) => {
+            for (const room of filteredRooms) {
                 const available = await isRoomAvailable(room._id, new Date(startDate), new Date(endDate));
-                return available ? room : null;
-            });
-    
-            const results = await Promise.all(promises);
-            filteredRooms = results.filter(room => room !== null);
+                if (available) {
+                    availableRooms.push(room);
+                }
+            }
+        } else {
+            availableRooms = filteredRooms;
         }
     
         res.send(filteredRooms);

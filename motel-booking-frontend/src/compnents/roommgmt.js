@@ -21,8 +21,9 @@ function RoomFilterBar() {
     }
     if (maxOccupancy) params.maxOccupancy = maxOccupancy;
     if (minPrice && maxPrice) params.priceRange = `${minPrice},${maxPrice}`;
-   
-    if(Object.keys(params).length===0){
+    const params1={"startDate":'2024-01-17',"endDate":'2024-01-25','maxOccupancy':2,'minPrice':100,maxPrice:500}
+
+    if(Object.keys(params1).length===0){
       console.log("no params")
       try {
         const response = await axios.get(url);
@@ -34,8 +35,10 @@ function RoomFilterBar() {
     }
     else{
       try {
-      
-        const response = await axios.get(url, {params:params} );
+        
+        console.log(params)
+        const response = await axios.get(url, {params:params1} );
+        
         setRooms(response.data);
         
       } catch (error) {
