@@ -8,7 +8,7 @@ const auth=require("./auth_middleware");
 const router = express.Router();
 const DiscountCode=require("./discount_model");
 const PDFDocument = require('pdfkit');
-
+const isRoomAvailable=require('./roomavail');
 function generateBookingPDF(booking, res) {
     const doc = new PDFDocument();
 
@@ -19,15 +19,7 @@ function generateBookingPDF(booking, res) {
     // Include more booking details as needed
 
     doc.end();}
-async function isRoomAvailable(roomId, startDate, endDate) {
-    const existingBooking = await Booking.findOne({
-        room: roomId,
-        endDate: { $gte: startDate },
-        startDate: { $lte: endDate },
-        status: 'booked'
-    });
-    return !existingBooking;
-}
+
 async function updateRoomAvailability(roomId,session) {
     let status;
     const booking= await Booking.find({

@@ -5,11 +5,11 @@ const router = express.Router();
 const adminAuth=require("./admin_auth");
 const auth=require("./auth_middleware");
 const mongoose=require("mongoose");
-
+const isRoomAvailable =require('./roomavail');
 // Get all rooms
 router.get('/rooms', async (req, res) => {
     const { page = 1, limit = 10, sortBy = 'createdAt', order = 'asc' } = req.query;
-    
+    console.log("called rooms");
     try {
         const rooms = await Room.find({})
             .sort({ [sortBy]: order === 'asc' ? 1 : -1 })
@@ -36,22 +36,34 @@ router.get('/rooms/:id', async (req, res) => {
 
 // Filter rooms
 router.get('/rooms/filter', async (req, res) => {
-    console.log(req.query);
+    console.log("called")
+    const {startDate,endDate,maxOccupancy,priceRange}=req.query;
     const match = {};
-    console.log(12222222222)
+   
     
-    if (req.query.maxOccupancy) {
-        match.maxOccupancy = req.query.maxOccupancy;
+    if (maxOccupancy) {
+        match.maxOccupancy = maxOccupancy;
     }
-    if (req.query.priceRange) {
-        const [minPrice, maxPrice] = req.query.priceRange.split(',').map(Number);
+    if (priceRange) {
+        const [minPrice, maxPrice] = priceRange.split(',').map(Number);
         match.pricePerNight = { $gte: minPrice, $lte: maxPrice };
     }
     // Add more filters as needed
 
     try {
-        const rooms = await Room.find(match);
-        res.send(rooms);
+        let filteredRooms = await Room.find(match);
+    
+        if (startDate && endDate) {
+            const promises = filteredRooms.map(async (room) => {
+                const available = await isRoomAvailable(room._id, new Date(startDate), new Date(endDate));
+                return available ? room : null;
+            });
+    
+            const results = await Promise.all(promises);
+            filteredRooms = results.filter(room => room !== null);
+        }
+    
+        res.send(filteredRooms);
     } catch (error) {
         res.status(500).send(error);
     }

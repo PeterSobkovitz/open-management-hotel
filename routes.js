@@ -38,7 +38,7 @@ router.post('/register-admin', async (req, res) => {
 });
 // User login
 router.post('/login',async (req, res) => {
-
+    console.log("logging in");
     try {
         const user = await User.findOne({ email: req.body.email });
         
@@ -72,7 +72,7 @@ router.post('/logout', auth, async (req, res) => {
     try {
         // Remove the token used for this session
         req.user.tokens = req.user.tokens.filter(tokenObj => tokenObj.token !== req.token);
-
+        console.log(req.user.tokens);
         await req.user.save();
       
         res.send({ message: 'Logout successful' });
