@@ -22,7 +22,7 @@ router.get('/rooms', async (req, res) => {
 });
 // Get room by ID
 router.get('/rooms/:id', async (req, res) => {
-  
+    console.log("fetching a single room details");
     try {
         const room = await Room.findById(req.params.id);
         if (!room) {
@@ -51,7 +51,7 @@ router.get('/rooms_filter', async (req, res) => {
         const [minPrice, maxPrice] = priceRange.split(',').map(Number);
         match.pricePerNight = { $gte: minPrice, $lte: maxPrice };
     }
-    // Add more filters as needed
+   
 
     try {
         let filteredRooms = await Room.find(match);

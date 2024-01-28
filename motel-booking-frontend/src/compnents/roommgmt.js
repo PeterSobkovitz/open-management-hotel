@@ -2,14 +2,19 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
+import {useNavigate} from 'react-router-dom';
 function RoomFilterBar() {
+  const navigate=useNavigate();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [maxOccupancy, setMaxOccupancy] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [rooms, setRooms] = useState([]);
+
+  const handleRoomClick=(roomId)=>{
+    navigate(`/rooms/${roomId}`);
+  }
 
   const fetchRooms = async () => {
     let url = 'http:localhost:3001/rooms';
@@ -61,10 +66,18 @@ function RoomFilterBar() {
       <input type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} placeholder="Max Price"/>
       <button onClick={fetchRooms} style={{ background: 'darkblue', color: 'white' }}>Search</button>
       <div>
-        {rooms.map(room => (
-          <div key={room._id}>
-            <h3>{room.name}</h3>
-            {/* Display other room details */}
+      {rooms.map(room => (
+          
+          <div key={room._id} onClick={()=>handleRoomClick(room._id)} className="room-card bg-white rounded-lg shadow hover:shadow-lg transition duration-300">
+            <img src={room.images[0]} alt={room.name} className="w-full h-64 object-cover rounded-t-lg"/>
+         
+            <div className="p-4">
+              <h3 className="font-bold text-lg">{room.name}</h3>
+              <p className="text-gray-600">{room.description}</p>
+              <div className="flex justify-between items-center mt-4">
+                <span className="font-bold">${room.pricePerNight} per night</span>
+              </div>
+            </div>
           </div>
         ))}
       </div>

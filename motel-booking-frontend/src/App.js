@@ -6,18 +6,13 @@ import Register from './compnents/register';
 import {AuthProvider} from './compnents/authContext';
 import RoomsDashboard from './compnents/rooms'; // Correct path as necessary
 import RoomManagementBar from './compnents/roommgmt';
+import RoomDetail from './compnents/room_details';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import 'tailwindcss/tailwind.css';
 const App = () => {
-    // const [isLoggedIn,setIsLoggedIn]=useState(false);
-    // useEffect(()=>{
-    //     const token=localStorage.getItem('token');
-    //     if (token){
-    //         setIsLoggedIn(true);
-    //     }
-    // },[])
+
     return (
         <AuthProvider>
         <Router>
@@ -25,7 +20,7 @@ const App = () => {
             <Route path="/" element={<Dashboard />} />
             <Route path="/register" element={<Register/>}/>
             <Route path="/rooms" element={<RoomsDashboard/>}></Route>
-
+            <Route path="/rooms/:id" element={<RoomDetail/>}></Route>
             </Routes>
         </Router>
         </AuthProvider>
