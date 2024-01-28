@@ -17,7 +17,7 @@ function RoomFilterBar() {
     if (startDate && endDate) {
       params.append('startDate', startDate.toISOString().split('T')[0]); // Format the date to YYYY-MM-DD
       params.append('endDate', endDate.toISOString().split('T')[0]); // Format the date to YYYY-MM-DD
-      url = 'http://localhost:3001/rooms/filter';
+      url = 'http://localhost:3001/rooms_filter';
     }
     if (maxOccupancy) params.maxOccupancy = maxOccupancy;
     if (minPrice && maxPrice) params.priceRange = `${minPrice},${maxPrice}`;

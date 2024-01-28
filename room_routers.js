@@ -34,8 +34,11 @@ router.get('/rooms/:id', async (req, res) => {
     }
 });
 
+
 // Filter rooms
-router.get('/rooms/filter', async (req, res) => {
+router.get('/rooms_filter', async (req, res) => {
+    console.log("testing");
+   
     console.log("called")
     const {startDate,endDate,maxOccupancy,priceRange}=req.query;
     const match = {};
@@ -52,7 +55,7 @@ router.get('/rooms/filter', async (req, res) => {
 
     try {
         let filteredRooms = await Room.find(match);
-    
+        let availableRooms=[];
         if (startDate && endDate) {
             for (const room of filteredRooms) {
                 const available = await isRoomAvailable(room._id, new Date(startDate), new Date(endDate));
@@ -66,6 +69,7 @@ router.get('/rooms/filter', async (req, res) => {
     
         res.send(filteredRooms);
     } catch (error) {
+        console.log(error);
         res.status(500).send(error);
     }
 });
