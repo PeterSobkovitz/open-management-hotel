@@ -12,9 +12,9 @@ function RoomFilterBar() {
   const [maxPrice, setMaxPrice] = useState('');
   const [rooms, setRooms] = useState([]);
 
-  const handleRoomClick=(roomId)=>{
-    navigate(`/rooms/${roomId}`);
-  }
+  const handleRoomClick = (roomId) => {
+    navigate(`/rooms/${roomId}?startDate=${startDate.toISOString().split('T')[0]}&endDate=${endDate.toISOString().split('T')[0]}`);
+  };
 
   const fetchRooms = async () => {
     let url = 'http:localhost:3001/rooms';
@@ -55,7 +55,7 @@ function RoomFilterBar() {
   };
 
   return (
-    <div className="room-filter-bar" style={{ background: 'white' }}>
+    <div className="room-filter-bar"  style={{ background: 'white' }}>
       <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
       <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
       <select value={maxOccupancy} onChange={(e) => setMaxOccupancy(e.target.value)}>

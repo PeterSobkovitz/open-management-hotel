@@ -6,6 +6,7 @@ async function isRoomAvailable(roomId, startDate, endDate) {
         startDate: { $lte: endDate },
         status: 'booked'
     });
+    console.log(existingBooking);
     return !existingBooking;
 }
 module.exports=isRoomAvailable;

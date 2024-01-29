@@ -74,6 +74,7 @@ router.post('/bookings',auth, async (req, res) => {
     
     session.startTransaction();
     console.log("Booking1");
+    console.log(req.body);
     try {
         
         const { roomId, userId, newStartDate, newEndDate } = req.body;
