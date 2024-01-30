@@ -6,14 +6,16 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useParams, useLocation } from 'react-router-dom';
-const { default: jwt_decode } = require("jwt-decode");
+import { jwtDecode } from "jwt-decode";
 const RoomDetail = () => {
-  const { roomId } = useParams();
+  const { id } = useParams();
+  const roomId=id;
   const { search } = useLocation();
-  const query = queryString.parse(search);
-  // const { startDate, endDate } = query;
-  // const [bookingStartDate, setBookingStartDate] = useState(startDate ? new Date(startDate) : new Date());
-  // const [bookingEndDate, setBookingEndDate] = useState(endDate ? new Date(endDate) : new Date());
+  const {startDate,endDate} = queryString.parse(search);
+  const [bookingStartDate, setBookingStartDate] = useState(new Date(startDate || new Date()));
+  const [bookingEndDate, setBookingEndDate] = useState(new Date(endDate || new Date()));
+
+ 
   const [room, setRoom] = useState(null);
 
   useEffect(() => {
@@ -28,7 +30,7 @@ const RoomDetail = () => {
       alert('Please log in to book a room.');
       return;
     }
-    const decoded = jwt_decode(token);
+    const decoded = jwtDecode(token);
     const userId = decoded.id;
 
     const bookingData = {

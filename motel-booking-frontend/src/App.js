@@ -7,6 +7,7 @@ import {AuthProvider} from './compnents/authContext';
 import RoomsDashboard from './compnents/rooms'; // Correct path as necessary
 import RoomManagementBar from './compnents/roommgmt';
 import RoomDetail from './compnents/room_details';
+import ManageBookings from './compnents/bookings';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="/register" element={<Register/>}/>
             <Route path="/rooms" element={<RoomsDashboard/>}></Route>
             <Route path="/rooms/:id" element={<RoomDetail/>}></Route>
+            <Route path="/booking_list" element={<ManageBookings/>}></Route>
             </Routes>
         </Router>
         </AuthProvider>

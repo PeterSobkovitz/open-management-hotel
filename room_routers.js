@@ -39,19 +39,19 @@ router.get('/rooms/:id', async (req, res) => {
 router.get('/rooms_filter', async (req, res) => {
     console.log("testing");
    
-    console.log("called")
-    const {startDate,endDate,maxOccupancy,priceRange}=req.query;
+    console.log(req.query);
+    const {startDate,endDate,maxOccupancy,minPrice,maxPrice}=req.query;
     const match = {};
    
     
     if (maxOccupancy) {
         match.maxOccupancy = maxOccupancy;
     }
-    if (priceRange) {
-        const [minPrice, maxPrice] = priceRange.split(',').map(Number);
+    if (minPrice && maxPrice) {
+        // const [minPrice, maxPrice] = priceRange.split(',').map(Number);
         match.pricePerNight = { $gte: minPrice, $lte: maxPrice };
     }
-   
+    console.log(minPrice);
 
     try {
         let filteredRooms = await Room.find(match);

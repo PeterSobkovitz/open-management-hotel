@@ -125,10 +125,10 @@ router.post('/bookings',auth, async (req, res) => {
 });
 
 // Fetch all bookings for a user
-router.get('/bookings/user/:userId',auth, async (req, res) => {
-  
+router.get('/bookings/user', auth, async (req, res) => {
+    const userId = req.user._id; // Extracted from the authenticated user
     try {
-        const bookings = await Booking.find({ user: req.params.userId }).populate('room');
+        const bookings = await Booking.find({ user: userId }).populate('room');
         res.send(bookings);
     } catch (error) {
         res.status(500).send(error);

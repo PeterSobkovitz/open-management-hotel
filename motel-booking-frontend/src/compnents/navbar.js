@@ -22,6 +22,7 @@ function Navbar() {
         {isLoggedIn?(
           <ul className="flex items-center space-x-4">
             <li>Welcome Back</li>
+            <li><Link to="/booking_list" className="text-blue-600 hover:text-blue-800">My Bookings</Link></li>
             <li><Logout>Logout</Logout></li>
 
           </ul>

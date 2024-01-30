@@ -17,40 +17,28 @@ function RoomFilterBar() {
   };
 
   const fetchRooms = async () => {
-    let url = 'http:localhost:3001/rooms';
-    const params = new URLSearchParams();
-    if (startDate && endDate) {
-      params.append('startDate', startDate.toISOString().split('T')[0]); // Format the date to YYYY-MM-DD
-      params.append('endDate', endDate.toISOString().split('T')[0]); // Format the date to YYYY-MM-DD
-      url = 'http://localhost:3001/rooms_filter';
-    }
-    if (maxOccupancy) params.maxOccupancy = maxOccupancy;
-    if (minPrice && maxPrice) params.priceRange = `${minPrice},${maxPrice}`;
-    const params1={"startDate":'2024-01-17',"endDate":'2024-01-25','maxOccupancy':2,'minPrice':100,maxPrice:500}
+    const baseUrl = 'http://localhost:3001/rooms';
 
-    if(Object.keys(params1).length===0){
-      console.log("no params")
-      try {
-        const response = await axios.get(url);
-        setRooms(response.data);
-        
-      } catch (error) {
-        console.error('Error fetching rooms:', error);
-      }
-    }
-    else{
-      try {
-        
-        console.log(params)
-        const response = await axios.get(url, {params:params1} );
-        
-        setRooms(response.data);
-        
-      } catch (error) {
-        console.error('Error fetching rooms:', error);
-      }
+  // Prepare the filter criteria
+  const filterCriteria = {
+    startDate: startDate && startDate.toISOString().split('T')[0],
+    endDate: endDate && endDate.toISOString().split('T')[0],
+    maxOccupancy: maxOccupancy,
+    minPrice: minPrice,
+    maxPrice: maxPrice
+  };
 
-    }
+  // Determine the URL based on whether filters are applied
+  const url = (filterCriteria.startDate && filterCriteria.endDate) ? `${baseUrl}_filter` : baseUrl;
+
+  // Make the request to the server
+  try {
+
+    const response = await axios.get(url, filterCriteria);
+    setRooms(response.data);
+  } catch (error) {
+    console.error('Error fetching rooms:', error);
+  };
     
   };
 
