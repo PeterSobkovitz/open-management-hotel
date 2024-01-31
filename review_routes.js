@@ -154,6 +154,18 @@ router.patch('/reviews/:reviewId/moderate', adminAuth, async (req, res) => {
         res.status(500).send({ error: error.message });
     }
 });
+router.get('/reviews/user',auth,async(req,res)=>{
+    const userId = req.user._id; // Extracted from the authenticated user
+
+    try{
+        const reviews=await Review.find({user:userId})
+        res.send(reviews);
+
+    }catch(error){
+        res.status(500).send(error);
+    }
+})
+
 
 router.get('/reviews/:bookingId', async (req, res) => {
     try {

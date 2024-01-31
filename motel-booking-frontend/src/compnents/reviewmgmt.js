@@ -14,24 +14,23 @@ function ReviewManagement() {
 
     useEffect(() => {
         const fetchReviews = async () => {
-         
-            setError('');
-            try {
-                 await axios.get(`http://localhost:3001/reviews/user`,{
-                    headers: { 'Authorization': `Bearer ${token}` }
-                  })
-                .then(response => setReviews(response.data))
-                
-            } catch (error) {
-                setError('Failed to fetch reviews.');
-                console.error('Error fetching reviews:', error);
-            } finally {
-                setLoading(false);
-            }
+          setLoading(true);
+          setError('');
+          try {
+            const response = await axios.get(`http://localhost:3001/reviews/user`, {
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+            setReviews(response.data);
+          } catch (error) {
+            setError('Failed to fetch reviews.');
+            console.error('Error fetching reviews:', error);
+          } finally {
+            setLoading(false);
+          }
         };
-
+      
         fetchReviews();
-    });
+      }, []); 
 
     const handleDelete = async (reviewId) => {
         if (!window.confirm('Are you sure you want to delete this review?')) {
