@@ -9,7 +9,6 @@ const Booking=require("./booking_model");
 
 // Post a review
 
-// Assuming you have a middleware `auth` for authentication
 
 router.post('/reviews', auth, async (req, res) => {
     
@@ -18,7 +17,7 @@ router.post('/reviews', auth, async (req, res) => {
    
     try {
         const { booking, rating, comment,type} = req.body;
-      
+        console.log(req.body);
         const userId = req.user._id; // Assuming this is set by your auth middleware
        
         const bookingfound = await Booking.findById(booking).session(session);
@@ -26,7 +25,7 @@ router.post('/reviews', auth, async (req, res) => {
         
 
         if (type==='review'){
-        
+            console.log("yes");
             if (!bookingfound) {
                 return res.status(404).send({ error: 'Booking not found' });
             }
@@ -87,6 +86,7 @@ router.post('/reviews', auth, async (req, res) => {
         
        
     } catch (error) {
+        console.log(error)
         await session.abortTransaction();
         res.status(400).send({ error: error.message });
     } finally {
