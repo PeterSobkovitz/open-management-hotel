@@ -22,6 +22,8 @@ function Navbar() {
             <ul className="flex items-center space-x-4">
               <li>Welcome Back</li>
               <li><Link to="/booking_list" className="text-blue-600 hover:text-blue-800">My Bookings</Link></li>
+              <li><Link to="/inquiry" className="text-blue-600 hover:text-blue-800" >Create an inquiry</Link></li>
+              <li><Link to="customer_request" className='text-blue-600 hover:text-blue-800'>Create a special request</Link></li>
               <li><Logout>Logout</Logout></li>
             </ul>
           ) : (

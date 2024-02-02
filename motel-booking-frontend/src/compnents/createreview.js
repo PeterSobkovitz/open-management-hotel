@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AuthContext } from './authContext'; // Assume this context provides the logged-in user's info
 
 function SubmitReview({ bookings }) { // Accept bookings as a prop
-  const { user } = useContext(AuthContext);
+
   const [selectedBookingId, setSelectedBookingId] = useState(bookings.length > 0 ? bookings[0]._id : ''); // Default to the first booking's ID
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');

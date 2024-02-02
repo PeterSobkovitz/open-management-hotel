@@ -15,6 +15,7 @@ function ReviewManagement() {
     const [showSubmitForm, setShowSubmitForm] = useState(false); // State to control the visibility of the SubmitReview form
     useEffect(() => {
         fetchReviewsAndBookings();
+        console.log(reviews);
     }, []);
 
     const fetchReviewsAndBookings = async () => {
@@ -25,6 +26,7 @@ function ReviewManagement() {
               headers: { 'Authorization': `Bearer ${token}` }
             });
             setReviews(response.data);
+            console.log(reviews);
             const bookingsResponse = await axios.get(`http://localhost:3001/bookings/user`, {
               headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -77,7 +79,7 @@ function ReviewManagement() {
             {reviews.length > 0 ? (
                 reviews.map(review => (
                     <div key={review._id} className="review-card">
-                        <h3>{review.room.name}</h3>
+                        <h3>{review.booking.room}</h3>
                         <p>{review.comment}</p>
                         <div>
                             <button onClick={() => handleDelete(review._id)}>Delete</button>

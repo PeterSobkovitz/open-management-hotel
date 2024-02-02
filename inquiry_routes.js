@@ -9,7 +9,7 @@ const { body, validationResult } = require('express-validator');
 const router = express.Router();
 
 router.post('/inquiries', auth, async (req, res) => {
-
+    console.log("inquiries")
     const session=await mongoose.startSession()
     session.startTransaction()
     const errors = validationResult(req);
@@ -25,6 +25,7 @@ router.post('/inquiries', auth, async (req, res) => {
         res.status(201).send(inquiry);
     } catch (error) {
         await session.abortTransaction();
+        console.log(error);
         res.status(500).send({ error: 'Internal Server Error' });
     }finally{
         await session.endSession();
