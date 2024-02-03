@@ -4,7 +4,7 @@ const jwt=require('jsonwebtoken');
 const router=express.Router();
 const auth=require('./auth_middleware');
 const mongoose=require("mongoose");
-const Roles=require("./role_model");
+const Role=require("./role_model");
 router.post('/register', async (req, res) => {
     console.log("register endpoint");
     try {
@@ -68,8 +68,17 @@ router.post('/login',async (req, res) => {
         console.log(
             "done"
         )
+        if (user.roles.length===0){
+            res.send({user,token})
+        }
+        else{
+            const role=await Role.findById(user.roles[0]);
+            let rolename=role.name;
+            console.log(rolename);
+            res.send({ user, token, rolename});
+
+        }
         
-        res.send({ user, token });
         
     } catch (error) {
         console.log(error);

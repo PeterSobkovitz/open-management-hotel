@@ -12,11 +12,10 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const role=localStorage.getItem('role');
-    
+    console.log(role);
     setIsLoggedIn(!!token);
     setUserRole(role);
-    
-    console.log(userRole);
+
     
   }, []);
   useEffect(() => {

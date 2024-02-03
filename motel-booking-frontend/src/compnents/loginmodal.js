@@ -12,9 +12,11 @@ function LoginModal({ isOpen, onClose }) {
   const onSubmit = async (data) => {
     try {
       
+      
       const response = await axios.post("http://localhost:3001/login", data);
+      console.log(response);
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('role',response.data.user.roles)
+      localStorage.setItem('role',response.data.rolename)
       setIsLoggedIn(true);
      
       onClose();
