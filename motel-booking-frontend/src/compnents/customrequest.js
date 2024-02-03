@@ -3,12 +3,12 @@ import axios from 'axios';
 import { AuthContext } from './authContext'; // Assuming this context provides access to the auth token
 
 function ServiceRequestForm() {
-  const { token } = useContext(AuthContext); // Use the token for authorization in the request
+  
   const [requestDetails, setRequestDetails] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -16,10 +16,15 @@ function ServiceRequestForm() {
     setSuccess('');
 
     try {
-      await axios.post('http://yourapi.com/service-requests', 
+      
+      const token=localStorage.getItem("token")
+      await axios.post('http://localhost:3001/service-requests', 
         { requestDetails },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            'Authorization': `Bearer ${token}`, // Include the auth token in the request
+            'Content-Type': 'application/json'
+          }
         }
       );
       setSuccess('Service request submitted successfully.');
