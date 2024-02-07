@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './authContext'; // Import the context
 
 function Logout() {
-  const { setIsLoggedIn } = useContext(AuthContext); // Use the context
+  const { setIsLoggedIn,setUserRole } = useContext(AuthContext); // Use the context
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
@@ -16,7 +16,9 @@ function Logout() {
         }
       });
       localStorage.removeItem('token');
+      localStorage.removeItem('role');
       setIsLoggedIn(false); // Update global state
+      setUserRole('');
       navigate('/');
     } catch (e) {
       console.error('Logout error:', e);

@@ -69,6 +69,7 @@ router.post('/login',async (req, res) => {
             "done"
         )
         if (user.roles.length===0){
+            console.log("no roles");
             res.send({user,token})
         }
         else{

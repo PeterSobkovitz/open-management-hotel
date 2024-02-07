@@ -7,7 +7,7 @@ function LoginModal({ isOpen, onClose }) {
   const modalRef = useRef();
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate = useNavigate()
-  const { setIsLoggedIn } = useContext(AuthContext);
+  const { setIsLoggedIn,setUserRole} = useContext(AuthContext);
 
   const onSubmit = async (data) => {
     try {
@@ -18,7 +18,7 @@ function LoginModal({ isOpen, onClose }) {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('role',response.data.rolename)
       setIsLoggedIn(true);
-     
+      setUserRole(response.data.rolename)
       onClose();
       navigate('/');
 

@@ -16,7 +16,6 @@ function AdminNavbar() {
           <a className="font-bold text-xl text-blue-600" href="/">Brand</a>
           <ul className='flex items-center space-x-4'>
             <Link to='/rooms' className="text-blue-600 hover:text-blue-800">Rooms</Link>
-            {isLoggedIn && <Link to='/review' className="text-blue-600 hover:text-blue-800">Leave a Review</Link>}
           </ul>
           {isLoggedIn ? (
             <ul className="flex items-center space-x-4">
