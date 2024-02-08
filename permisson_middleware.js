@@ -9,7 +9,7 @@ const checkPermission = (permission) => {
         const hasPermission = userRoles.some(role => 
             role.permissions.includes(permission)
         );
-
+        console.log(hasPermission);
         if (!hasPermission) {
             console.log("not enough permissions")
             return res.status(403).send({ error: 'Insufficient permissions' });

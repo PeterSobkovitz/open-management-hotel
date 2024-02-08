@@ -7,7 +7,22 @@ const adminAuth=require("./admin_auth");
 const checkPermission=require("./permisson_middleware");
 
 const mongoose=require("mongoose");
-router.post('/admin/roles', adminAuth, async (req, res) => {
+
+router.get('/admin/roles',adminAuth,checkPermission('manage_roles'),async(req,res)=>{
+    console.log("GET NI");
+
+    try{
+        const roles=await Role.find({});
+        console.log(roles);
+        res.send(roles)
+    }
+    catch(error){
+        console.log("err");
+        res.status(500).send(error);
+
+    }
+})
+router.post('/admin/roles', adminAuth,checkPermission('manage_genesis'), async (req, res) => {
     const session=await mongoose.startSession()
     session.startTransaction()
     
@@ -25,7 +40,7 @@ router.post('/admin/roles', adminAuth, async (req, res) => {
         await session.endSession();
     }
 });
-router.patch('/admin/users/:userId/roles', adminAuth,checkPermission('manage_rooms'), async (req, res) => {
+router.patch('/admin/users/:userId/roles', adminAuth, async (req, res) => {
     const session=await mongoose.startSession()
     session.startTransaction()
     try {

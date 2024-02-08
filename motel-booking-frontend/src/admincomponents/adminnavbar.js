@@ -19,6 +19,8 @@ function AdminNavbar() {
           </ul>
           {isLoggedIn ? (
             <ul className="flex items-center space-x-4">
+              <li><Link to='/genesis_role_create' className="text-blue-600 hover:text-blue-800">Create New Role</Link></li>
+              <li><Link to='/roles' className="text-blue-600 hover:text-blue-800">List Existing Roles</Link></li>
               
              
               <li><Logout>Logout</Logout></li>

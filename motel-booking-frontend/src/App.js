@@ -11,6 +11,8 @@ import ManageBookings from './compnents/bookings';
 import ReviewManagement from './compnents/reviewmgmt';
 import InquiryForm from './compnents/userInquiry';
 import ServiceRequestForm from './compnents/customrequest';
+import CreateRoleForm from './admincomponents/genesiscreateUser';
+import ListRole from './admincomponents/findroles';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -27,8 +29,10 @@ const App = () => {
             <Route path="/rooms/:id" element={<RoomDetail/>}></Route>
             <Route path="/booking_list" element={<ManageBookings/>}></Route>
             <Route path="/review" element={<ReviewManagement/>}></Route>
-            <Route path="inquiry"element={<InquiryForm/>}></Route>
-            <Route path="customer_request" element={<ServiceRequestForm/>}></Route>
+            <Route path="/inquiry"element={<InquiryForm/>}></Route>
+            <Route path="/customer_request" element={<ServiceRequestForm/>}></Route>
+            <Route path="/genesis_role_create" element={<CreateRoleForm/>}></Route>
+            <Route path="/roles" element={<ListRole/>}></Route>
             </Routes>
         </Router>
         </AuthProvider>
