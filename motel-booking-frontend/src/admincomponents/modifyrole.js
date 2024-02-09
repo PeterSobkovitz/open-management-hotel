@@ -2,7 +2,7 @@ import React, { useState, useEffect,useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../compnents/authContext';
 
-function RoleEditor({ roleId }) {
+function RoleEditor({ userId }) {
     const [newRoles, setNewRoles] = useState([]); // Assuming multiple roles can be set
     const { token } = useContext(AuthContext);
   
@@ -11,6 +11,7 @@ function RoleEditor({ roleId }) {
     };
   
     const handleSubmit = async (e) => {
+      console.log(userId);
       e.preventDefault();
       try {
         await axios.patch(`http://localhost:3001/admin/users/${userId}/roles`, 

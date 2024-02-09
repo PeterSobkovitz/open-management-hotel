@@ -8,6 +8,20 @@ const checkPermission=require("./permisson_middleware");
 
 const mongoose=require("mongoose");
 
+router.get('/admin/users',adminAuth,checkPermission('manage_roles'),async(req,res)=>{
+    console.log("GET NI");
+
+    try{
+        const roles=await User.find({ roles: { $exists: true, $not: { $size: 0 } } });
+        console.log(roles);
+        res.send(roles)
+    }
+    catch(error){
+        console.log("err");
+        res.status(500).send(error);
+
+    }
+})
 router.get('/admin/roles',adminAuth,checkPermission('manage_roles'),async(req,res)=>{
     console.log("GET NI");
 
@@ -45,10 +59,11 @@ router.patch('/admin/users/:userId/roles', adminAuth, async (req, res) => {
     session.startTransaction()
     try {
         const user = await User.findById(req.params.userId);
+        console.log(user);
         if (!user) {
             return res.status(404).send({ error: 'User not found' });
         }
-
+        console.log("yes");
         user.roles = req.body.roles; // Array of role IDs
         await user.save(session);
         await session.commitTransaction();

@@ -1,31 +1,39 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { AuthContext } from '../compnents/authContext'; 
 import RoleEditor from './modifyrole';
+
 function ListRole({ userId }) {
   const [roles, setRoles] = useState([]);
   const [selectedRoleId, setSelectedRoleId] = useState('');
   
   const token = localStorage.getItem('token');
+
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        // Fetch roles from your API
         const response = await axios.get('http://localhost:3001/admin/users', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setRoles(response.data);
+        setRoles(response.data); // Assuming the API returns an array of role objects
       } catch (error) {
         console.error('Failed to fetch roles', error);
       }
     };
 
     fetchRoles();
-  }, [token]); // Fetch roles when the component mounts or token changes
+  }, [token]);
 
   const handleRoleSelection = (e) => {
     setSelectedRoleId(e.target.value);
   };
+
+  // Log the selectedRoleId when it changes
+  useEffect(() => {
+    if (selectedRoleId) {
+      console.log(selectedRoleId);
+      // Any additional logic that needs to run when selectedRoleId changes
+    }
+  }, [selectedRoleId]);
 
   return (
     <div>
@@ -36,8 +44,9 @@ function ListRole({ userId }) {
           <option key={role._id} value={role._id}>{role.name}</option>
         ))}
       </select>
-      {selectedRoleId && <RoleEditor roleId={selectedRoleId} />}
+      {selectedRoleId && <RoleEditor userId={selectedRoleId} />}
     </div>
   );
 }
+
 export default ListRole;
