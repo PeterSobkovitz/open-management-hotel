@@ -4,7 +4,7 @@ import { AuthContext } from '../compnents/authContext';
 import LoginModal from '../compnents/loginmodal';
 import Logout from '../compnents/logout';
 import { Link } from 'react-router-dom';
-
+import AdminRegisterUser from './adminreguser';
 function AdminNavbar() {
   const [isModalOpen, setModalOpen] = useState(false);
   const { isLoggedIn } = useContext(AuthContext);
@@ -21,6 +21,7 @@ function AdminNavbar() {
             <ul className="flex items-center space-x-4">
               <li><Link to='/genesis_role_create' className="text-blue-600 hover:text-blue-800">Create New Role</Link></li>
               <li><Link to='/roles' className="text-blue-600 hover:text-blue-800">List Existing Roles</Link></li>
+              <li><Link to='/create_staff' className="text-blue-600 hover:text-blue-800">Add New Staff</Link></li>
               
              
               <li><Logout>Logout</Logout></li>

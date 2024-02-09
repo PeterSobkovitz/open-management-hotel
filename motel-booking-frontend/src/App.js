@@ -13,6 +13,7 @@ import InquiryForm from './compnents/userInquiry';
 import ServiceRequestForm from './compnents/customrequest';
 import CreateRoleForm from './admincomponents/genesiscreateUser';
 import ListRole from './admincomponents/findroles';
+import AdminRegisterUser from './admincomponents/adminreguser';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -33,6 +34,7 @@ const App = () => {
             <Route path="/customer_request" element={<ServiceRequestForm/>}></Route>
             <Route path="/genesis_role_create" element={<CreateRoleForm/>}></Route>
             <Route path="/roles" element={<ListRole/>}></Route>
+            <Route path="/create_staff" element={<AdminRegisterUser/>}></Route>
             </Routes>
         </Router>
         </AuthProvider>

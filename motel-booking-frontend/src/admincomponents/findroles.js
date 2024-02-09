@@ -1,7 +1,7 @@
 import React, { useState, useEffect,useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../compnents/authContext'; 
-
+import RoleEditor from './modifyrole';
 function ListRole({ userId }) {
   const [roles, setRoles] = useState([]);
   const [selectedRoleId, setSelectedRoleId] = useState('');
@@ -11,7 +11,7 @@ function ListRole({ userId }) {
     const fetchRoles = async () => {
       try {
         // Fetch roles from your API
-        const response = await axios.get('http://localhost:3001/admin/roles', {
+        const response = await axios.get('http://localhost:3001/admin/users', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setRoles(response.data);
