@@ -1,13 +1,13 @@
 // Dashboard.js
 import React, { useContext } from 'react';
-import Navbar from './navbar'; // Component for navigation
+import Navbar from './navbar';
 import AdminNavbar from '../admincomponents/adminnavbar';
 import RoomFilterBar from './roommgmt';
 import { AuthContext } from './authContext';
+
 function Dashboard() {
-  const {userRole}=useContext(AuthContext);
+  const { userRole } = useContext(AuthContext);
   
-  console.log(true,true);
   const renderNavbar = () => {
     switch(userRole) {
       case 'GenesisAdmin':
@@ -18,12 +18,12 @@ function Dashboard() {
         return <Navbar />;
     }
   };
+
   return (
     <div className="dashboard-container">
       {renderNavbar()}
-      <div className="content">
-      <RoomFilterBar/>
-        
+      <div className="content" style={{ backgroundImage: "url('room4pair.jpg')" }}>
+        <RoomFilterBar/>
         {/* Add other components as needed */}
       </div>
     </div>

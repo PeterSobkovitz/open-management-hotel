@@ -9,7 +9,7 @@ function ManageBookings() {
   const [tempStartDate, setTempStartDate] = useState(null);
   const [tempEndDate, setTempEndDate] = useState(null);
   const [activeBookingId, setActiveBookingId] = useState(null);
-
+  
   const initiateModifyBooking = (bookingId, startDate, endDate) => {
     setTempStartDate(new Date(startDate));
     setTempEndDate(new Date(endDate));
