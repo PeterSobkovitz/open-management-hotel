@@ -1,0 +1,59 @@
+/* RoomFilterBar.css */
+.search-form-wrapper {
+    background: white;
+    padding: 1.25rem; /* 20px */
+    border-radius: 0.375rem; /* 6px */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.input-text-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem; /* 16px */
+}
+
+.input-text-field label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* 8px */
+    font-weight: bold;
+    margin-bottom: 0.5rem; /* 8px */
+}
+
+.input-text-field input {
+    padding: 0.5rem; /* 8px */
+    border: 2px dashed #ccc;
+    border-radius: 0.375rem; /* 6px */
+    font-size: 1rem; /* 16px */
+}
+
+.input-text-field input:focus {
+    outline: none;
+    border-color: #84b4dc;
+}
+.datepicker-custom, .input-custom {
+    padding: 0.5rem; /* 8px */
+    border: 2px solid #ccc; /* Adjusted from dashed to solid for better visibility */
+    border-radius: 0.375rem; /* 6px */
+    width: 100%; /* Ensures full width within the column */
+}
+
+.button-custom {
+    background-color: #1d4567; /* Deep blue */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-custom:hover {
+    background-color: #84b4dc; /* Sky blue for hover effect */
+}
+/* Responsive adjustments for mobile view */
+@media (max-width: 768px) {
+    .mobile-view-font {
+        font-size: 14px;
+    }
+}

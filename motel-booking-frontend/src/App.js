@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Dashboard from './compnents/dashboard';
 import Register from './compnents/register';
+import Login from './compnents/login';
 import {AuthProvider} from './compnents/authContext';
 import RoomsDashboard from './compnents/rooms'; // Correct path as necessary
 import RoomManagementBar from './compnents/roommgmt';
@@ -14,6 +15,7 @@ import ServiceRequestForm from './compnents/customrequest';
 import CreateRoleForm from './admincomponents/genesiscreateUser';
 import ListRole from './admincomponents/findroles';
 import AdminRegisterUser from './admincomponents/adminreguser';
+
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -26,6 +28,7 @@ const App = () => {
             <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/register" element={<Register/>}/>
+            <Route path="/login" element={<Login/>}/>
             <Route path="/rooms" element={<RoomsDashboard/>}></Route>
             <Route path="/rooms/:id" element={<RoomDetail/>}></Route>
             <Route path="/booking_list" element={<ManageBookings/>}></Route>
