@@ -8,6 +8,7 @@ import lobby from '../images/lobby.png';
 import RoomCard from './roomcard';
 import axios from 'axios';
 import MembershipHero from './memershib';
+import HotelCarousel from './carousel';
 function Dashboard() {
     const { userRole } = useContext(AuthContext);
     const [rooms, setRooms] = useState([]);
@@ -51,12 +52,13 @@ function Dashboard() {
     return (
         <div className="min-h-screen flex flex-col">
             {renderNavbar()}
+            <HotelCarousel/>
           
-            <div className="flex-grow">
+            {/* <div className="flex-grow">
            
                 <div className="hero bg-cover bg-center h-96 relative" style={{ backgroundImage: `url(${lobby})` }}>
                
-                    {/* Overlay for text contrast */}
+                 
                     <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                         <div className="text-center text-white">
                             <h1 className="text-4xl font-bold mb-2">Discover Your Next Escape</h1>
@@ -66,8 +68,8 @@ function Dashboard() {
                 </div>
              
             </div>
-         
-            <RoomFilterBar subs={fetchRooms} />
+          */}
+            {/* <RoomFilterBar subs={fetchRooms} /> */}
         
       <div className="container mx-auto px-4 mt-8">
         {rooms.map(room => <RoomCard key={room._id} room={room} onRoomClick={() => {/* ... */}} />)}

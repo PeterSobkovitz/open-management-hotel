@@ -1,0 +1,55 @@
+.navbar {
+    background-color: #000; /* Adjust color to match the navbar background */
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+  }
+  
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .nav-logo {
+    font-size: 24px;
+    font-weight: bold;
+    /* Add more styling to match the logo appearance */
+  }
+  
+  .nav-items {
+    display: flex;
+    /* Add styling for spacing between items, etc. */
+  }
+  
+  .nav-item {
+    padding: 0 15px;
+    text-decoration: none;
+    color: #fff;
+    /* Adjust styling to match the look & feel */
+  }
+  
+  .nav-social {
+    /* Style similarly to nav-items, but for social icons */
+  }
+  
+  .nav-icon {
+    padding: 0 10px;
+    text-decoration: none;
+    color: #fff;
+    /* Add appropriate icons and style them */
+  }
+  
+  .book-now {
+    background-color: #c0a060; /* Adjust the color to match the button */
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    /* Style the button to match the image */
+  }
+  
+  /* Add responsive styling as needed */
+  
