@@ -10,8 +10,7 @@ const HotelCarousel = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+
   };
 
   const images = [
@@ -22,16 +21,17 @@ const HotelCarousel = () => {
   ];
  
   return (
-    <div style={{ position: 'relative', width: '100%', height: '30vh' }}>
+    <div style={{ position: 'relative', width: '100%', height: '30vh',padding:'0px',margin:'0px'}}>
       <Slider {...settings} style={{ width: '100%', height: '100%' }}>
         
         {images.map((image, index) => (
           
           <div key={index}>
-            <h1></h1>
+          
             <div style={{
-              backgroundImage: `url(${image}) center center / cover no-repeat`,
-              height: '100%',
+              backgroundImage: `url(${image})`,
+              
+           
             }}>
               {/* Black cover with 10% opacity */}
               <div style={{
@@ -58,13 +58,20 @@ const HotelCarousel = () => {
   );
 };
 
-// Custom arrow components
 const NextArrow = (props) => {
   const { className, style, onClick } = props;
   return (
     <div
       className={className}
-      style={{ ...style, display: 'block', background: 'rgba(255, 255, 255, 0.5)' }}
+      style={{
+        ...style,
+        display: 'block',
+        background: 'rgba(255, 255, 255, 0.5)',
+        borderRadius: '50%', // Optional: makes the arrow buttons circular
+        width: '30px', // Set a width
+        height: '30px', // Set a height
+       
+      }}
       onClick={onClick}
     />
   );
@@ -75,10 +82,20 @@ const PrevArrow = (props) => {
   return (
     <div
       className={className}
-      style={{ ...style, display: 'block', background: 'rgba(255, 255, 255, 0.5)' }}
+      style={{
+        ...style,
+        display: 'block',
+        background: 'rgba(255, 255, 255, 0.5)',
+        borderRadius: '50%', // Optional: makes the arrow buttons circular
+        width: '30px', // Set a width
+        height: '30px', // Set a height
+       
+      }}
       onClick={onClick}
     />
   );
 };
 
 export default HotelCarousel;
+
+
