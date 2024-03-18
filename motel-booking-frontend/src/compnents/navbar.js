@@ -22,6 +22,7 @@ function Navbar() {
     backgroundColor: '#231f20',
     padding: '0 10%',
     color: 'white',
+    
   };
 
   // Style for the hotel name in the center
