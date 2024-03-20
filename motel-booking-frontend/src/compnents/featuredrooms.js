@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 function FeaturedRooms() {
     const [rooms, setRooms] = useState([]);
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('http://localhost:3001/rooms?limit=3') // Fetch 3 random rooms
@@ -17,8 +17,8 @@ function FeaturedRooms() {
             <h1 style={{ textAlign: 'center', marginTop: '5%' }}>Rooms</h1>
             <div className="room-images" style={{ display: 'flex', justifyContent: 'space-around', marginTop: '2%' }}>
                 {rooms.map((room, index) => (
-                    <div key={index} className="room" style={{ width: '25%', position: 'relative' }}>
-                        <img src={room.images[0]} alt={room.name} style={{ width: '100%', height: '100%' }} />
+                    <div key={index} className="room" style={{ width: 'calc(45% - 10px)', position: 'relative', margin: '0 5px' }}> {/* Adjusted margin here */}
+                    <img src={room.images[0]} alt={room.name} style={{ width: '100%', height: '100%' }} />
                         <div className="overlay" style={{
                             position: 'absolute',
                             top: '0',
@@ -32,7 +32,7 @@ function FeaturedRooms() {
                             justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                            <p style={{ marginTop: '15%' }}>{room.price} per night</p>
+                            <p style={{ marginTop: '15%' }}>{room.pricePerNight} per night</p>
                             <p>{room.name}</p>
                         </div>
                     </div>
@@ -42,13 +42,13 @@ function FeaturedRooms() {
                 style={{ 
                     display: 'block',
                     margin: '20px auto',
-                    backgroundColor: 'darkbrown',
+                    backgroundColor: 'black',
                     color: 'white',
                     padding: '10px 20px',
                     borderRadius: '20px',
                     cursor: 'pointer'
                 }}
-                onClick={() => history.push('/rooms')}
+                onClick={() => navigate('/rooms')}
             >
                 View All Rooms
             </button>
