@@ -75,7 +75,7 @@ router.post('/login',async (req, res) => {
         else{
             const role=await Role.findById(user.roles[0]);
             let rolename=role.name;
-            console.log(rolename);
+            
             res.send({ user, token, rolename});
 
         }

@@ -9,7 +9,7 @@ const isRoomAvailable =require('./roomavail');
 // Get all rooms
 router.get('/rooms', async (req, res) => {
     const { page = 1, limit = 10, sortBy = 'createdAt', order = 'asc' } = req.query;
-    console.log("called rooms");
+    
     try {
         const rooms = await Room.find({})
             .sort({ [sortBy]: order === 'asc' ? 1 : -1 })

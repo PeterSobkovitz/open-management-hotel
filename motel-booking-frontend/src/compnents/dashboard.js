@@ -9,6 +9,7 @@ import RoomCard from './roomcard';
 import axios from 'axios';
 import MembershipHero from './memershib';
 import HotelCarousel from './carousel';
+import FeaturedRooms from './featuredrooms';
 function Dashboard() {
     const { userRole } = useContext(AuthContext);
     const [rooms, setRooms] = useState([]);
@@ -54,40 +55,10 @@ function Dashboard() {
             {renderNavbar()}
             <HotelCarousel/>
           
-            {/* <div className="flex-grow">
-           
-                <div className="hero bg-cover bg-center h-96 relative" style={{ backgroundImage: `url(${lobby})` }}>
-               
-                 
-                    <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                        <div className="text-center text-white">
-                            <h1 className="text-4xl font-bold mb-2">Discover Your Next Escape</h1>
-                            <p className="mb-4">Luxury rooms & suites just a click away.</p>
-                        </div>
-                    </div>
-                </div>
-             
-            </div>
-          */}
-            {/* <RoomFilterBar subs={fetchRooms} /> */}
+            <FeaturedRooms/>
         
-      <div className="container mx-auto px-4 mt-8">
-        {rooms.map(room => <RoomCard key={room._id} room={room} onRoomClick={() => {/* ... */}} />)}
-      </div>
-            <style jsx>{`
-                /* Custom styles for specific adjustments */
-                .hero::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 0, 0, 0.5); /* Dark overlay for better text readability */
-                }
-            `}</style>
-              <div className="mt-1"> {/* 5% spacing depending on the overall layout size */}</div>
-                <MembershipHero/>
+  
+       
             
         </div>
     );
