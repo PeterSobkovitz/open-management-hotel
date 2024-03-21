@@ -13,11 +13,11 @@ function FeaturedRooms() {
     }, []);
 
     return (
-        <div className="featured-rooms" style={{ height: '40vh', backgroundColor: 'white' }}>
+        <div className="featured-rooms" style={{ minheight: '40vh', backgroundColor: 'white' }}>
             <h1 style={{ textAlign: 'center', marginTop: '5%' }}>Rooms</h1>
             <div className="room-images" style={{ display: 'flex', justifyContent: 'space-around', marginTop: '2%' }}>
                 {rooms.map((room, index) => (
-                    <div key={index} className="room" style={{ width: 'calc(45% - 10px)', position: 'relative', margin: '0 5px' }}> {/* Adjusted margin here */}
+                    <div key={index} className="room" style={{ width: 'calc(35% - 5px)', position: 'relative', margin: '0 10px' }}> {/* Adjusted margin here */}
                     <img src={room.images[0]} alt={room.name} style={{ width: '100%', height: '100%' }} />
                         <div className="overlay" style={{
                             position: 'absolute',

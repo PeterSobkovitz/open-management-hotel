@@ -73,14 +73,16 @@ router.post('/bookings',auth, async (req, res) => {
     const session = await mongoose.startSession();
     
     session.startTransaction();
-    console.log("Booking1");
-    console.log(req.body);
+    
+   
     try {
-        
+        console.log(req.body);
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         const { roomId, userId, newStartDate, newEndDate } = req.body;
         const discountCode=req.body.DiscountCode;
         const user = await User.findById(userId).session(session);
         const room = await Room.findById(roomId).session(session);
+        
         if (!user || !room) {
             console.log("invalid");
             throw new Error('Invalid user or room');

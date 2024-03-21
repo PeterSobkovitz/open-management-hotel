@@ -42,7 +42,7 @@ function RoomFilterBar({subs}) {
             </select>
             <input className="p-2 border rounded" type="number" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} placeholder="Min Price"/>
             <input className="p-2 border rounded" type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} placeholder="Max Price"/>
-            <button className="bg-darkblue text-blue p-2 rounded" onClick={handleSubmit}>Search</button>
+            <button className="bg-darkblue text-blue p-2 rounded" onClick={handleSubmit}>Filter</button>
         </div>
   );
 }

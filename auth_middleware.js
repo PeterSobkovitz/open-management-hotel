@@ -9,16 +9,14 @@ const auth = async (req, res, next) => {
     
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
-        console.log(token);
+       
         
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
         const user = await User.findOne({ _id:new ObjectId(decoded.id), 'tokens.token': token });
-        console.log(user)
-        console.log("isit?");
+       
         if (!user) {
-            
-            console.log("Not found")
+           
             return res.status(401).send({ error: 'Authentication failed. User not found.' });
         }
         
@@ -26,11 +24,11 @@ const auth = async (req, res, next) => {
         req.user = user;
         
         next();
-        console.log("IN HERE")
+    
      
        
     } catch (e) {
-        console.log("NOT WORKING");
+   
         res.status(401).send({ error: 'Please authenticate.' });
     }
 };
