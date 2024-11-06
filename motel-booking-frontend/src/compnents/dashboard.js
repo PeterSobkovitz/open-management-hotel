@@ -29,7 +29,7 @@ function Dashboard() {
   
 
     return (
-        <div className="min-h-screen flex flex-col" style={{'overflow-y':'auto'}}>
+        <div className="min-h-screen flex flex-col" style={{'overflow-y':'auto', 'overlow-x':'auto'}}>
             {renderNavbar()}
             <HotelCarousel/>
           
