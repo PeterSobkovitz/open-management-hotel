@@ -9,6 +9,7 @@ const router = express.Router();
 const DiscountCode=require("./discount_model");
 const PDFDocument = require('pdfkit');
 const isRoomAvailable=require('./roomavail');
+//
 function generateBookingPDF(booking, res) {
     const doc = new PDFDocument();
 

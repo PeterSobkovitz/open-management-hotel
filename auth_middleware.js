@@ -1,5 +1,6 @@
-const jwt=require('jsonwebtoken');
 
+const jwt=require('jsonwebtoken');
+//
 
 const User=require('./database_model');
 const mongoose=require("mongoose");
